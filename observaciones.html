@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Observación</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #0077ff;
+      outline: none;
+    }
+
+    .form-button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-button:hover {
+      background-color: #005fcc;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    .message.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Registrar Observación</h2>
+    <form id="formulario-observacion">
+      <label for="numero_informe">Número de Informe</label>
+      <input type="text" id="numero_informe" name="numero_informe" required placeholder="Ej. 12345">
+
+      <label for="observacion">Observación</label>
+      <input type="text" id="observacion" name="observacion" required placeholder="Describe la observación">
+
+      <label for="fecha">Fecha de Observación</label>
+      <input type="date" id="fecha" name="fecha" required>
+
+      <label for="solucionada">¿Fue solucionada?</label>
+      <select id="solucionada" name="solucionada" required>
+        <option value="">Selecciona una opción</option>
+        <option value="sí">Sí</option>
+        <option value="no">No</option>
+      </select>
+
+      <button type="submit" class="form-button">Guardar</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    const supabaseUrl = 'https://jjqzlmhfelcvupvkkxio.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqcXpsbWhmZWxjdnVwdmtreGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwMjU2MjksImV4cCI6MjA2MjYwMTYyOX0.6E0WWCyWwGgfodon1TiUA8IeJQto7uJn4lTK6F2w9RA'; 
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const formulario = document.getElementById('formulario-observacion');
+    const messageBox = document.getElementById('message');
+
+    formulario.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const numero_informe = document.getElementById('numero_informe').value.trim();
+      const observacion = document.getElementById('observacion').value.trim();
+      const fecha = document.getElementById('fecha').value;
+      const solucionada = document.getElementById('solucionada').value;
+
+      const { data, error } = await supabase
+        .from('observaciones')
+        .insert([
+          {
+            numeroinfo: numero_informe,
+            observacion: observacion,
+            fecha: fecha,
+            solucion: solucionada
+          }
+        ]);
+
+      if (error) {
+        messageBox.className = 'message error';
+        messageBox.textContent = 'Error al guardar los datos: ' + error.message;
+      } else {
+        messageBox.className = 'message success';
+        messageBox.textContent = 'Datos guardados correctamente';
+        formulario.reset();
+      }
+
+      messageBox.style.display = 'block';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido al Sistema</title>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding-top: 80px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 40px;
+      color: #00ffff;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .neon-button {
+      padding: 15px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      background-color: transparent;
+      text-transform: uppercase;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      width: 260px;
+    }
+
+    .neon-button:hover,
+    .neon-button:focus {
+      background-color: #0ff;
+      color: #000;
+      box-shadow: 0 0 20px #0ff, 0 0 30px #0ff;
+    }
+
+    .altas { box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f; }
+    .altas:hover { background-color: #ff007f; box-shadow: 0 0 20px #ff007f, 0 0 30px #ff007f; }
+
+    .observaciones { box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
+    .observaciones:hover { background-color: #00ff00; color: #000; box-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
+
+    .reportes { box-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff; }
+    .reportes:hover { background-color: #00bfff; box-shadow: 0 0 20px #00bfff, 0 0 30px #00bfff; }
+  </style>
+</head>
+<body>
+
+  <h1>Bienvenido ADMINISTRADOR al sistema de altas, observaciones y reportes de control de proveedores</h1>
+
+  <div class="button-container">
+    <button class="neon-button altas" onclick="location.href='altas.html'">Altas</button>
+    <button class="neon-button observaciones" onclick="location.href='observaciones.html'">Observaciones</button>
+    <button class="neon-button reportes" onclick="location.href='proovedores.html'">Reportes</button>
+  </div>
+
+</body>
+</html>

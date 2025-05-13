@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Proveedor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0f0f0f;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .form-container {
+      background-color: #1a1a1a;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #ffa500, 0 0 40px #ffa50020;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-container h2 {
+      color: #ffa500;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #ffffff;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #2b2b2b;
+      color: #fff;
+      border: 1px solid #ffa50050;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #ffa500;
+      box-shadow: 0 0 5px #ffa500;
+    }
+
+    .form-button {
+      width: 100%;
+      padding: 12px;
+      background: #ffa500;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    .form-button:hover {
+      background: #e69500;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Alta de Proveedor</h2>
+    <form id="proveedorForm">
+      <div class="form-group">
+        <label for="nombre">Nombre del Proveedor</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="utilidad">Utilidad que Proporciona</label>
+        <input type="text" id="utilidad" name="utilidad" required>
+      </div>
+      <div class="form-group">
+        <label for="dias">Días de Entrega Semanal</label>
+        <input type="number" id="dias" name="dias" required>
+      </div>
+      <div class="form-group">
+        <label for="calidad">Calidad del Producto</label>
+        <input type="text" id="calidad" name="calidad" required>
+      </div>
+      <button type="submit" class="form-button">Alta</button>
+    </form>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    
+    const supabaseUrl = 'https://jjqzlmhfelcvupvkkxio.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqcXpsbWhmZWxjdnVwdmtreGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwMjU2MjksImV4cCI6MjA2MjYwMTYyOX0.6E0WWCyWwGgfodon1TiUA8IeJQto7uJn4lTK6F2w9RA'; 
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const form = document.getElementById('proveedorForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const utilidad = document.getElementById('utilidad').value.trim();
+      const dias = document.getElementById('dias').value.trim();
+      const calidad = document.getElementById('calidad').value.trim();
+
+      if (!nombre || !utilidad || !dias || !calidad) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('proveedores')
+        .insert([
+          {
+            nombre: nombre,
+            utilidad: utilidad,
+            dias: dias,
+            calidad: calidad,
+          }
+        ]);
+
+      if (error) {
+        console.error('Error al guardar los datos:', error);
+        alert('Hubo un error al guardar los datos.');
+      } else {
+        alert('Proveedor registrado con éxito.');
+        form.reset(); 
+      }
+    });
+  </script>
+</body>
+</html>
